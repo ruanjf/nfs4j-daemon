@@ -5,7 +5,7 @@ import org.dcache.nfs.v3.MountServer;
 import org.dcache.nfs.v3.NfsServerV3;
 import org.dcache.nfs.v3.xdr.mount_prot;
 import org.dcache.nfs.v3.xdr.nfs3_prot;
-import org.dcache.nfs.v4.MDSOperationFactory;
+import org.dcache.nfs.v4.MDSOperationExecutor;
 import org.dcache.nfs.v4.NFSServerV41;
 import org.dcache.nfs.v4.xdr.nfs4_prot;
 import org.dcache.oncrpc4j.portmap.OncRpcEmbeddedPortmap;
@@ -104,7 +104,7 @@ public class Daemon implements Closeable {
 
         NFSServerV41 nfs4 = new NFSServerV41.Builder()
                 .withVfs(vfs)
-                .withOperationFactory(new MDSOperationFactory())
+                .withOperationExecutor(new MDSOperationExecutor())
                 .withExportFile(exportFile)
                 .build();
 

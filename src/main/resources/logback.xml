@@ -9,4 +9,6 @@
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
+<!--    <logger level="debug" name="world.gfi.nfs4j" additivity="false" />-->
+<!--    <logger level="debug" name="org.dcache" additivity="false" />-->
 </configuration>

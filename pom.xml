@@ -102,7 +102,7 @@
         <dependency>
             <groupId>org.dcache</groupId>
             <artifactId>nfs4j-core</artifactId>
-            <version>0.18.2</version>
+            <version>0.20.0</version>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>
@@ -172,26 +172,54 @@
         </dependency>
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.eclipse.collections</groupId>
+                <artifactId>eclipse-collections-api</artifactId>
+                <version>10.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.collections</groupId>
+                <artifactId>eclipse-collections</artifactId>
+                <version>10.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.collections</groupId>
+                <artifactId>eclipse-collections-forkjoin</artifactId>
+                <version>10.2.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <repositories>
         <repository>
-            <id>dcache releases</id>
-            <url>https://download.dcache.org/nexus/content/repositories/releases</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
+            <id>maven2-repository.dcache.org</id>
+            <name>dCache.ORG Repository for Maven</name>
+            <url>http://download.dcache.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
         <repository>
-            <id>dcache snapshots</id>
-            <url>https://download.dcache.org/nexus/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
+            <id>dcache-releases</id>
+            <url>https://download.dcache.org/nexus/content/repositories/releases</url>
+            <layout>default</layout>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
+<!--        <repository>-->
+<!--            <id>dcache-snapshots</id>-->
+<!--            <name>dCache.ORG snapshots repository</name>-->
+<!--            <url>http://download.dcache.org/nexus/content/repositories/snapshots</url>-->
+<!--            <layout>default</layout>-->
+<!--        </repository>-->
     </repositories>
 </project>

@@ -97,7 +97,8 @@ public abstract class HandleRegistry<P> {
     private long add(P path, long fileHandle) {
         Long otherFh = pathToFileHandle.putIfAbsent(path, fileHandle);
         if (otherFh != null) {
-            throw new IllegalStateException("Can't add FileHandle " + fileHandle + " with Path " + path + ". Path " + path + " is already registered with Inode " + otherFh);
+            LOG.info("Path " + path + " is already registered with Inode " + otherFh);
+            return otherFh;
         }
 
         P existingPath = fileHandleToPath.putIfAbsent(fileHandle, path);
