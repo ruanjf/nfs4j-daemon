@@ -137,7 +137,7 @@ public class RootFileSystem implements VirtualFileSystem {
                 for (Path p : ds) {
                     String filename = p.getFileName().toString();
                     verifierLong += filename.hashCode() + currentCookie * 1024;
-                    if (currentCookie >= cookie) {
+                    if ((cookie == 0 && currentCookie >= cookie) || (cookie > 0 && currentCookie > cookie)) {
                         AttachableFileSystem fs = fileSystems.get(p.normalize().toString());
                         if (fs == null) {
                             list.add(mainFs.buildDirectoryEntry(p, currentCookie));
@@ -257,5 +257,15 @@ public class RootFileSystem implements VirtualFileSystem {
     @Override
     public NfsIdMapping getIdMapper() {
         return mainFs.getIdMapper();
+    }
+
+    @Override
+    public boolean getCaseInsensitive() {
+        return false;
+    }
+
+    @Override
+    public boolean getCasePreserving() {
+        return false;
     }
 }

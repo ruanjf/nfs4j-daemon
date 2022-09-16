@@ -46,4 +46,14 @@ public class WindowsNioFileSystem extends AbstractNioFileSystem<DosFileAttribute
         String linkData = this.readlinkFromPath(path);
         stat.setSize(linkData.length());
     }
+
+    @Override
+    public boolean getCaseInsensitive() {
+        return false;
+    }
+
+    @Override
+    public boolean getCasePreserving() {
+        return false;
+    }
 }

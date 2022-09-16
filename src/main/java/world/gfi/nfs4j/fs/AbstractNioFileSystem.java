@@ -233,7 +233,7 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
             long currentCookie = 0;
             for (Path p : ds) {
                 verifierLong += p.hashCode() + currentCookie * 1024;
-                if (currentCookie >= cookie) {
+                if ((cookie == 0 && currentCookie >= cookie) || (cookie > 0 && currentCookie > cookie)) {
                     list.add(this.buildDirectoryEntry(p, currentCookie));
                 }
                 currentCookie++;

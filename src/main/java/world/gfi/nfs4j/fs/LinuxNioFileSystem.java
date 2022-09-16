@@ -75,4 +75,14 @@ public class LinuxNioFileSystem extends AbstractNioFileSystem<PosixFileAttribute
             }
         }
     }
+
+    @Override
+    public boolean getCaseInsensitive() {
+        return false;
+    }
+
+    @Override
+    public boolean getCasePreserving() {
+        return false;
+    }
 }
