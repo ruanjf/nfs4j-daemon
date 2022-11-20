@@ -105,7 +105,7 @@ public class Daemon implements Closeable {
         NFSServerV41 nfs4 = new NFSServerV41.Builder()
                 .withVfs(vfs)
                 .withOperationExecutor(new MDSOperationExecutor())
-                .withExportFile(exportFile)
+                .withExportTable(exportFile)
                 .build();
 
         NfsServerV3 nfs3 = new NfsServerV3(exportFile, vfs);
