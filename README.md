@@ -9,7 +9,11 @@ available at [gfi-centre-ouest/vagrant-nfs4j](https://github.com/gfi-centre-oues
 
 ## TODO:
 
-- MacOS support.
+- [ ] MacOS server support.
+- [ ] ip range based auth
+- [ ] NFS V3 for macOS client
+- [ ] recycle bin
+
 
 ## Quickstart
 
@@ -168,6 +172,7 @@ You have some options to workaround this issue.
 - Tweak the Local Group Policy to allow *Create symbolic links* to the user running `nfs4j-daemon`. (See this [StackOverflow post](https://superuser.com/questions/104845/permission-to-make-symbolic-links-in-windows-7#answer-105381))
 
 ## Build from sources
+build from source code Java11 and Maven3 are required.
 
 ```
 mvn clean verify
