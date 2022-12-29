@@ -13,6 +13,7 @@ available at [gfi-centre-ouest/vagrant-nfs4j](https://github.com/gfi-centre-oues
 - [ ] ip range based auth
 - [ ] NFS V3 for macOS client
 - [ ] recycle bin
+- [ ] specify bind address with OncRpcSvcBuilder.withBindAddress
 
 
 ## Quickstart
