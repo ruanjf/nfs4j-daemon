@@ -90,7 +90,7 @@
                             <jre>
                                 <path>%JAVA_HOME%</path>
                                 <bundledJreAsFallback>true</bundledJreAsFallback>
-                                <minVersion>1.8</minVersion>
+                                <minVersion>11</minVersion>
                             </jre>
                         </configuration>
                     </execution>
