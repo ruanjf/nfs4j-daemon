@@ -100,7 +100,7 @@ public class RootFileSystem implements VirtualFileSystem {
         return removedFileSystem;
     }
 
-    protected AttachableFileSystem delegate(Inode inode) {
+    public AttachableFileSystem delegate(Inode inode) {
         int fsIndex = (int) (Longs.fromByteArray(inode.getFileId()) & 0xff);
         AttachableFileSystem fs = this.fsIndexes.get(fsIndex);
         if (fs != null) {

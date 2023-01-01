@@ -29,6 +29,7 @@ import world.gfi.nfs4j.fs.permission.DefaultPermissionsMapperFactory;
 import world.gfi.nfs4j.fs.permission.PermissionsMapper;
 import world.gfi.nfs4j.status.Status;
 import world.gfi.nfs4j.status.StatusShare;
+import world.gfi.nfs4j.utils.NfsServerV3Mod;
 
 import java.io.Closeable;
 import java.io.FileInputStream;
@@ -109,7 +110,7 @@ public class Daemon implements Closeable {
                 .withExportTable(exportFile)
                 .build();
 
-        NfsServerV3 nfs3 = new NfsServerV3(exportFile, vfs);
+        NfsServerV3 nfs3 = new NfsServerV3Mod(exportFile, vfs);
         MountServer mountd = new MountServer(exportFile, vfs);
 
         if (!config.isPortmapDisabled()) {
