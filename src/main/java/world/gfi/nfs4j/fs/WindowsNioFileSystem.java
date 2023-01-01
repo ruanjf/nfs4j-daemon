@@ -20,8 +20,9 @@ import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 public class WindowsNioFileSystem extends AbstractNioFileSystem<DosFileAttributes> {
     private static final Logger LOG = LoggerFactory.getLogger(WindowsNioFileSystem.class);
 
-    public WindowsNioFileSystem(Path root, PermissionsMapper permissionsMapper, UniqueHandleGenerator handleGenerator) {
-        super(root, permissionsMapper, handleGenerator);
+    public WindowsNioFileSystem(Path root, PermissionsMapper permissionsMapper,
+                                UniqueHandleGenerator handleGenerator, boolean recycleEnabled) {
+        super(root, permissionsMapper, handleGenerator, recycleEnabled);
     }
 
     @Override

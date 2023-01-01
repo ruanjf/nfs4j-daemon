@@ -20,11 +20,11 @@ public class ShareConfig {
     }
 
     public ShareConfig(Path path) {
-        this.path = path;
+        this.path = path.toAbsolutePath().normalize();
     }
 
     public ShareConfig(Path path, String alias) {
-        this.path = path;
+        this.path = path.toAbsolutePath().normalize();
         this.alias = alias;
     }
 

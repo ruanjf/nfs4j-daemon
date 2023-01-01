@@ -26,8 +26,9 @@ public class LinuxNioFileSystem extends AbstractNioFileSystem<PosixFileAttribute
 
     private final UserPrincipalLookupService lookupService = FileSystems.getDefault().getUserPrincipalLookupService();
 
-    public LinuxNioFileSystem(Path root, PermissionsMapper permissionsMapper, UniqueHandleGenerator handleGenerator) {
-        super(root, permissionsMapper, handleGenerator);
+    public LinuxNioFileSystem(Path root, PermissionsMapper permissionsMapper,
+                              UniqueHandleGenerator handleGenerator, boolean recycleEnabled) {
+        super(root, permissionsMapper, handleGenerator, recycleEnabled);
     }
 
     @Override

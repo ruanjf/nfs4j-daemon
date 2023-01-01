@@ -51,8 +51,9 @@ public class RootFileSystem implements VirtualFileSystem {
                 .getRootDirectories().iterator().next();
     }
 
-    public RootFileSystem(PermissionsConfig permissions, UniqueHandleGenerator uniqueLongGenerator) {
-        mainFs = new LinuxNioFileSystem(buildRootPath(), new SimplePermissionsMapperRead(new LinuxPermissionsSimpleReader(permissions)), uniqueLongGenerator);
+    public RootFileSystem(PermissionsConfig permissions, UniqueHandleGenerator uniqueLongGenerator, boolean recycleEnabled) {
+        mainFs = new LinuxNioFileSystem(buildRootPath(), new SimplePermissionsMapperRead(new LinuxPermissionsSimpleReader(permissions)),
+                uniqueLongGenerator, recycleEnabled);
     }
 
     public AttachableFileSystem attachFileSystem(AttachableFileSystem fs, String path, String... morePath) throws AttachException {

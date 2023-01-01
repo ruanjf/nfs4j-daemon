@@ -11,9 +11,10 @@ available at [gfi-centre-ouest/vagrant-nfs4j](https://github.com/gfi-centre-oues
 
 - [ ] MacOS server support.
 - [ ] ip range based auth
-- [ ] NFS V3 for macOS client
-- [ ] recycle bin
+- [x] NFS V3 for macOS client
+- [x] recycle bin and hide
 - [ ] specify bind address with OncRpcSvcBuilder.withBindAddress
+- [ ] map mount uid gid
 
 
 ## Quickstart
@@ -72,6 +73,7 @@ Usage: <main class> [-h] [--api] [--no-share] [--portmap-disabled] [--udp]
       --no-share             Disable default share and configured shares
       --udp                  Use UDP instead of TCP
       --portmap-disabled     Disable embedded portmap service
+      --recycle-enabled      Enable recycle bin, location <share>/.recycle
   -e, --exports=<exports>    Path to exports file (nsf4j advanced configuration)
   -h, --help                 Display this help message
 ```

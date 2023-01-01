@@ -41,7 +41,9 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
@@ -57,19 +59,29 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
     private final NfsIdMapping _idMapper = new SimpleIdMap();
     private final FileSystemReaderWriter fileSystemReaderWriter;
     private String alias;
+    private boolean recycleEnabled;
 
     protected final long rootFileHandle;
     protected final Path root;
     protected final PermissionsMapper permissionsMapper;
     protected final HandleRegistry<Path> handleRegistry;
 
-    public AbstractNioFileSystem(Path root, PermissionsMapper permissionsMapper, UniqueHandleGenerator handleGenerator) {
+    public AbstractNioFileSystem(Path root, PermissionsMapper permissionsMapper,
+                                 UniqueHandleGenerator handleGenerator, boolean recycleEnabled) {
         this.root = root;
         this.permissionsMapper = permissionsMapper;
         this.handleRegistry = new PathHandleRegistry(handleGenerator);
         this.rootFileHandle = handleRegistry.add(this.root);
         this.fileSystemReaderWriter = new FileSystemReaderWriter(handleRegistry);
         this.handleRegistry.setListener(this.permissionsMapper.getHandleRegistryListener());
+        this.recycleEnabled = recycleEnabled;
+    }
+
+    private Inode getRecycleInode() throws IOException {
+        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date().getTime());
+        Path recycle = this.root.resolve(".recycle").resolve(today);
+        Files.createDirectories(recycle);
+        return handleRegistry.toInode(recycle);
     }
 
     @Override
@@ -232,6 +244,9 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
         try (java.nio.file.DirectoryStream<Path> ds = Files.newDirectoryStream(path)) {
             long currentCookie = 0;
             for (Path p : ds) {
+                if (p.equals(path.resolve(".recycle"))) {
+                    continue;
+                }
                 verifierLong += p.hashCode() + currentCookie * 1024;
                 if ((cookie == 0 && currentCookie >= cookie) || (cookie > 0 && currentCookie > cookie)) {
                     list.add(this.buildDirectoryEntry(p, currentCookie));
@@ -324,11 +339,28 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
         return linkData;
     }
 
+    private void recycle(Inode parent, String path) throws IOException {
+        LOG.info(String.format("recycle %s", handleRegistry.toPath(parent).resolve(path)));
+        Inode recycleInode = this.getRecycleInode();
+        Path currentPath = handleRegistry.toPath(parent).resolve(path).normalize();
+        Path newPath = handleRegistry.toPath(recycleInode).resolve(path).normalize();
+        if (Files.exists(newPath)) {
+            long unixTime = System.currentTimeMillis() / 1000L;
+            Path backup = newPath.resolveSibling(newPath.getFileName() + String.format(".%s", unixTime));
+            Files.move(newPath, backup, StandardCopyOption.ATOMIC_MOVE);
+        }
+        Files.move(currentPath, newPath, StandardCopyOption.ATOMIC_MOVE);
+    }
+
     @Override
     public void remove(Inode parent, String path) throws IOException {
         Path parentPath = handleRegistry.toPath(parent);
         Path targetPath = parentPath.resolve(path).normalize();
-
+        if (this.recycleEnabled) {
+            this.recycle(parent, path);
+            handleRegistry.remove(targetPath);
+            return;
+        }
         try {
             Files.delete(targetPath);
         } catch (DirectoryNotEmptyException e) {

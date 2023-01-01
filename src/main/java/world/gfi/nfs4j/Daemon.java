@@ -60,7 +60,7 @@ public class Daemon implements Closeable {
 
     public Daemon(Config config) throws AttachException {
         this.config = config;
-
+        // read exports file content
         ExportFile exportFile;
         if (config.getExportFile() == null) {
             try (InputStream stream = this.getClass().getClassLoader().getResourceAsStream("exports")) {
@@ -95,11 +95,11 @@ public class Daemon implements Closeable {
         uniqueHandleGenerator = new UniqueAtomicLongGenerator();
 
         fsFactory = new DefaultFileSystemFactory();
-        permissionsMapperFactory = new DefaultPermissionsMapperFactory();
+        permissionsMapperFactory = new DefaultPermissionsMapperFactory();  // file permission
 
-        vfs = new RootFileSystem(config.getPermissions(), uniqueHandleGenerator);
+        vfs = new RootFileSystem(config.getPermissions(), uniqueHandleGenerator, config.isRecycleEnabled());
         for (ShareConfig share : config.getShares()) {
-            attach(share);
+            attach(share);  // setup shares
         }
 
         NFSServerV41 nfs4 = new NFSServerV41.Builder()
@@ -135,7 +135,8 @@ public class Daemon implements Closeable {
         PermissionsMapper permissionsMapper = buildPermissionMapper(share, alias);
 
 
-        AttachableFileSystem shareVfs = fsFactory.newFileSystem(share.getPath(), permissionsMapper, uniqueHandleGenerator);
+        AttachableFileSystem shareVfs = fsFactory.newFileSystem(share.getPath(), permissionsMapper,
+                uniqueHandleGenerator, config.isRecycleEnabled());
         vfs.attachFileSystem(shareVfs, alias);
         share.setPath(shareVfs.getRoot());
         share.setAlias(shareVfs.getAlias());

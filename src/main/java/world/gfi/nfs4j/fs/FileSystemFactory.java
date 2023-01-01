@@ -9,5 +9,6 @@ import java.nio.file.Path;
  * Factory of {@link AttachableFileSystem}.
  */
 public interface FileSystemFactory {
-    AttachableFileSystem newFileSystem(Path root, PermissionsMapper permissionsMapper, UniqueHandleGenerator uniqueLongGenerator);
+    AttachableFileSystem newFileSystem(Path root, PermissionsMapper permissionsMapper,
+                                       UniqueHandleGenerator uniqueLongGenerator, boolean recycleEnabled);
 }

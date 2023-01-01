@@ -18,6 +18,7 @@ public class Config {
     private Boolean noShare = null;
     private List<ShareConfig> shares = new ArrayList<>(Arrays.asList(new ShareConfig(Paths.get("."))));
     private Path exportFile;
+    private boolean recycleEnabled = false;
 
     public Config() {
         this.shares = shares;
@@ -45,6 +46,14 @@ public class Config {
 
     public void setPortmapDisabled(boolean portmapDisabled) {
         this.portmapDisabled = portmapDisabled;
+    }
+
+    public boolean isRecycleEnabled() {
+        return recycleEnabled;
+    }
+
+    public void setRecycleEnabled(boolean recycleEnabled) {
+        this.recycleEnabled = recycleEnabled;
     }
 
     public ApiConfig getApi() {
