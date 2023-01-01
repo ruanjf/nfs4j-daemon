@@ -19,6 +19,7 @@ public class Config {
     private List<ShareConfig> shares = new ArrayList<>(Arrays.asList(new ShareConfig(Paths.get("."))));
     private Path exportFile;
     private boolean recycleEnabled = false;
+    private String bindAddress;
 
     public Config() {
         this.shares = shares;
@@ -94,5 +95,11 @@ public class Config {
 
     public void setShares(List<ShareConfig> shares) {
         this.shares = shares;
+    }
+
+    public String getBindAddress() { return this.bindAddress;}
+
+    public void setBindAddress(String addr) {
+        this.bindAddress = addr;
     }
 }

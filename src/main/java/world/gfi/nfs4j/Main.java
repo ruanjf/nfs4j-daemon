@@ -69,6 +69,9 @@ public class Main implements Callable<Void> {
     @Option(names = {"--recycle-enabled"}, description = "Enable recycle bin, location <share>/.recycle")
     private Boolean recycleEnabled;
 
+    @Option(names = {"--bind"}, description = "Bind address")
+    private String bindAddress;
+
     @Option(names = {"-e", "--exports"}, description = "Path to exports file (nsf4j advanced configuration)")
     private Path exports;
 
@@ -116,6 +119,10 @@ public class Main implements Callable<Void> {
 
         if (this.recycleEnabled != null) {
             config.setRecycleEnabled(this.recycleEnabled);
+        }
+
+        if (this.bindAddress != null) {
+            config.setBindAddress(this.bindAddress);
         }
 
         if (this.uid != null) {

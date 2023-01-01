@@ -84,6 +84,10 @@ public class Daemon implements Closeable {
                 .withIoStrategy(IoStrategy.LEADER_FOLLOWER)
                 .withServiceName("nfs4j@" + config.getPort());
 
+        if (config.getBindAddress() != null) {
+            rpcBuilder.withBindAddress(config.getBindAddress());
+        }
+
         if (config.isUdp()) {
             rpcBuilder.withUDP();
         } else {

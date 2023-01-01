@@ -10,17 +10,17 @@ available at [gfi-centre-ouest/vagrant-nfs4j](https://github.com/gfi-centre-oues
 ## TODO:
 
 - [ ] MacOS server support.
-- [ ] ip range based auth
+- [x] ip range based auth
 - [x] NFS V3 for macOS client
 - [x] recycle bin and hide
-- [ ] specify bind address with OncRpcSvcBuilder.withBindAddress
+- [x] specify bind address with OncRpcSvcBuilder.withBindAddress
 - [ ] map mount uid gid
 
 
 ## Quickstart
 
-- Download latest binaries from [Github Releases](https://github.com/gfi-centre-ouest/nfs4j-daemon/releases).
-
+- Download latest binaries from [Github Releases](https://github.com/ruanima/nfs4j-daemon/releases).
+- Download and install JRE11 from [adoptium.net](https://adoptium.net/zh-CN/temurin/archive/?version=11)
 - Run `nfs4j-daemon`. With default options, it will publish the current working directory through NFS.
 
 ```bash
@@ -74,6 +74,7 @@ Usage: <main class> [-h] [--api] [--no-share] [--portmap-disabled] [--udp]
       --udp                  Use UDP instead of TCP
       --portmap-disabled     Disable embedded portmap service
       --recycle-enabled      Enable recycle bin, location <share>/.recycle
+      --bind=<address>       Server bind address 
   -e, --exports=<exports>    Path to exports file (nsf4j advanced configuration)
   -h, --help                 Display this help message
 ```
@@ -164,6 +165,17 @@ shares:
     - `EMULATED` => File permission support is emulated using a local database. This may impact performance, files uid, gid and mode are preserved on any server OS.
     - `UNIX` => File permission support use native Unix attributes on the server. This better performance than `EMULTAED`, files uid, gid and mode are be preserved, but this option is only supported on Unix servers.
 
+## Exports file configuration
+exports file contains advanced configuration for shares, such as ip address based permission.
+
+see also [Ret Hat nfs config document](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/5/html/deployment_guide/s1-nfs-server-config-exports)
+
+ip address permission config example 
+```
+/share 192.168.123.1/24
+/share1 192.168.123.1/25
+```
+
 ## Symbolic links support on Windows
 
 On default Windows installation, unprivileged user can't create symbolic links, so nfs4j may fail to create symbolic 
@@ -174,9 +186,21 @@ You have some options to workaround this issue.
 - Run `nfs4j-daemon` as Administrator.
 - Tweak the Local Group Policy to allow *Create symbolic links* to the user running `nfs4j-daemon`. (See this [StackOverflow post](https://superuser.com/questions/104845/permission-to-make-symbolic-links-in-windows-7#answer-105381))
 
+## NFSv3 support
+### macOS client config
+edit `/etc/nfs.conf`, add flowing line
+
+```
+nfs.client.mount.options = rw,vers=3,sec=sys
+```
+
+### Linux client known issues
+- On Ubuntu 22.04 or Debian, list dir is stuck. Just use NFSv4 instead.
+
 ## Build from sources
 build from source code Java11 and Maven3 are required.
 
 ```
 mvn clean verify
 ```
+
