@@ -42,9 +42,7 @@ import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 
@@ -60,6 +58,8 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
     private final FileSystemReaderWriter fileSystemReaderWriter;
     private String alias;
     private boolean recycleEnabled;
+    private Set<String> hiddenFiles = Set.of(".recycle", "System Volume Information", "$RECYCLE.BIN");
+    private int fsIndex;
 
     protected final long rootFileHandle;
     protected final Path root;
@@ -67,14 +67,15 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
     protected final HandleRegistry<Path> handleRegistry;
 
     public AbstractNioFileSystem(Path root, PermissionsMapper permissionsMapper,
-                                 UniqueHandleGenerator handleGenerator, boolean recycleEnabled) {
+                                 UniqueHandleGenerator handleGenerator, boolean recycleEnabled, int fsIndex) {
         this.root = root;
         this.permissionsMapper = permissionsMapper;
-        this.handleRegistry = new PathHandleRegistry(handleGenerator);
+        this.handleRegistry = new PathHandleRegistry(handleGenerator, fsIndex);
         this.rootFileHandle = handleRegistry.add(this.root);
         this.fileSystemReaderWriter = new FileSystemReaderWriter(handleRegistry);
         this.handleRegistry.setListener(this.permissionsMapper.getHandleRegistryListener());
         this.recycleEnabled = recycleEnabled;
+        this.fsIndex = fsIndex;
     }
 
     private Inode getRecycleInode() throws IOException {
@@ -244,7 +245,7 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
         try (java.nio.file.DirectoryStream<Path> ds = Files.newDirectoryStream(path)) {
             long currentCookie = 0;
             for (Path p : ds) {
-                if (p.equals(path.resolve(".recycle"))) {
+                if (toFileHandle(inode) == this.rootFileHandle && hiddenFiles.contains(p.getFileName().toString())) {
                     continue;
                 }
                 verifierLong += p.hashCode() + currentCookie * 1024;
@@ -340,7 +341,7 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
     }
 
     private void recycle(Inode parent, String path) throws IOException {
-        LOG.info(String.format("recycle %s", handleRegistry.toPath(parent).resolve(path)));
+        // LOG.info(String.format("recycle %s", handleRegistry.toPath(parent).resolve(path)));
         Inode recycleInode = this.getRecycleInode();
         Path currentPath = handleRegistry.toPath(parent).resolve(path).normalize();
         Path newPath = handleRegistry.toPath(recycleInode).resolve(path).normalize();
@@ -356,7 +357,7 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
     public void remove(Inode parent, String path) throws IOException {
         Path parentPath = handleRegistry.toPath(parent);
         Path targetPath = parentPath.resolve(path).normalize();
-        if (this.recycleEnabled) {
+        if (this.recycleEnabled && !path.startsWith(".")) {
             this.recycle(parent, path);
             handleRegistry.remove(targetPath);
             return;

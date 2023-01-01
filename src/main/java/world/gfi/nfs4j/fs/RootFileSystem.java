@@ -2,6 +2,7 @@ package world.gfi.nfs4j.fs;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+import com.google.common.primitives.Longs;
 import org.dcache.nfs.v4.NfsIdMapping;
 import org.dcache.nfs.v4.xdr.nfsace4;
 import org.dcache.nfs.vfs.AclCheckable;
@@ -27,11 +28,7 @@ import java.io.IOError;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A memory implementation of {@link VirtualFileSystem} that supports attaching others file systems {@link AttachableFileSystem} on given aliases.
@@ -41,6 +38,8 @@ public class RootFileSystem implements VirtualFileSystem {
 
     private final LinuxNioFileSystem mainFs;
     private Map<String, AttachableFileSystem> fileSystems = new LinkedHashMap<>();
+    private int currentFsIndex = 0;
+    private HashMap<Integer, AttachableFileSystem> fsIndexes = new HashMap<Integer, AttachableFileSystem>();
 
     private static Path buildRootPath() {
         return Jimfs.newFileSystem(
@@ -51,9 +50,14 @@ public class RootFileSystem implements VirtualFileSystem {
                 .getRootDirectories().iterator().next();
     }
 
+    public int incrFsIndex() {
+        this.currentFsIndex += 1;
+        return this.currentFsIndex;
+    }
+
     public RootFileSystem(PermissionsConfig permissions, UniqueHandleGenerator uniqueLongGenerator, boolean recycleEnabled) {
         mainFs = new LinuxNioFileSystem(buildRootPath(), new SimplePermissionsMapperRead(new LinuxPermissionsSimpleReader(permissions)),
-                uniqueLongGenerator, recycleEnabled);
+                uniqueLongGenerator, recycleEnabled, 0);
     }
 
     public AttachableFileSystem attachFileSystem(AttachableFileSystem fs, String path, String... morePath) throws AttachException {
@@ -61,6 +65,10 @@ public class RootFileSystem implements VirtualFileSystem {
             if (fs.getAlias() != null) {
                 throw new AlreadyAttachedException(fs);
             }
+            if (this.currentFsIndex >= 255) {
+                throw new AttachException(String.format("Too many filesystem to attach %s", this.currentFsIndex));
+            }
+            this.fsIndexes.put(this.currentFsIndex, fs);
             Path aliasPath = mainFs.root.getFileSystem().getPath(path, morePath);
             Path directories = Files.createDirectories(aliasPath).normalize();
             if (fileSystems.containsKey(directories.toString())) {
@@ -93,10 +101,10 @@ public class RootFileSystem implements VirtualFileSystem {
     }
 
     protected AttachableFileSystem delegate(Inode inode) {
-        for (AttachableFileSystem fs : fileSystems.values()) {
-            if (fs.hasInode(inode)) {
-                return fs;
-            }
+        int fsIndex = (int) (Longs.fromByteArray(inode.getFileId()) & 0xff);
+        AttachableFileSystem fs = this.fsIndexes.get(fsIndex);
+        if (fs != null) {
+            return fs;
         }
         return mainFs;
     }

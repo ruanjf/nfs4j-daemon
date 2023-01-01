@@ -23,12 +23,14 @@ public abstract class HandleRegistry<P> {
     private final NonBlockingHashMap<P, Long> pathToFileHandle = new NonBlockingHashMap<>();
     private final UniqueHandleGenerator uniqueLongGenerator;
     private HandleRegistryListener<P> listener;
+    private int fsIndex;
 
     public void setListener(HandleRegistryListener<P> listener) {
         this.listener = listener;
     }
 
-    public HandleRegistry(UniqueHandleGenerator uniqueLongGenerator) {
+    public HandleRegistry(UniqueHandleGenerator uniqueLongGenerator, int fsIndex) {
+        this.fsIndex = fsIndex;
         this.uniqueLongGenerator = uniqueLongGenerator;
     }
 
@@ -90,8 +92,12 @@ public abstract class HandleRegistry<P> {
         return Inode.forFile(Longs.toByteArray(fileHandle));
     }
 
+    private long genUniqueHandle() {
+        return (this.uniqueLongGenerator.uniqueHandle() << 8) | this.fsIndex;
+    }
+
     public long add(P path) {
-        return this.add(path, this.uniqueLongGenerator.uniqueHandle());
+        return this.add(path, this.genUniqueHandle());
     }
 
     private long add(P path, long fileHandle) {

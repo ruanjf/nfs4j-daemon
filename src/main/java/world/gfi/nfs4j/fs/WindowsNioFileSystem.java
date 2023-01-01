@@ -21,8 +21,8 @@ public class WindowsNioFileSystem extends AbstractNioFileSystem<DosFileAttribute
     private static final Logger LOG = LoggerFactory.getLogger(WindowsNioFileSystem.class);
 
     public WindowsNioFileSystem(Path root, PermissionsMapper permissionsMapper,
-                                UniqueHandleGenerator handleGenerator, boolean recycleEnabled) {
-        super(root, permissionsMapper, handleGenerator, recycleEnabled);
+                                UniqueHandleGenerator handleGenerator, boolean recycleEnabled, int fsIndex) {
+        super(root, permissionsMapper, handleGenerator, recycleEnabled, fsIndex);
     }
 
     @Override

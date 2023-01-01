@@ -12,11 +12,11 @@ import java.nio.file.Path;
 public class DefaultFileSystemFactory implements FileSystemFactory {
     @Override
     public AttachableFileSystem newFileSystem(Path root, PermissionsMapper permissionsMapper,
-                                              UniqueHandleGenerator uniqueLongGenerator, boolean recycleEnabled) {
+                                              UniqueHandleGenerator uniqueLongGenerator, boolean recycleEnabled, int fsIndex) {
         if (SystemUtils.IS_OS_WINDOWS) {
-            return new WindowsNioFileSystem(root, permissionsMapper, uniqueLongGenerator, recycleEnabled);
+            return new WindowsNioFileSystem(root, permissionsMapper, uniqueLongGenerator, recycleEnabled, fsIndex);
         } else {
-            return new LinuxNioFileSystem(root, permissionsMapper, uniqueLongGenerator, recycleEnabled);
+            return new LinuxNioFileSystem(root, permissionsMapper, uniqueLongGenerator, recycleEnabled, fsIndex);
         }
     }
 }

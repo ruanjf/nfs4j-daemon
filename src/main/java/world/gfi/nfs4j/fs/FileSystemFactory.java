@@ -10,5 +10,5 @@ import java.nio.file.Path;
  */
 public interface FileSystemFactory {
     AttachableFileSystem newFileSystem(Path root, PermissionsMapper permissionsMapper,
-                                       UniqueHandleGenerator uniqueLongGenerator, boolean recycleEnabled);
+                                       UniqueHandleGenerator uniqueLongGenerator, boolean recycleEnabled, int fsIndex);
 }

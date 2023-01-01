@@ -38,10 +38,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * nfs4j Daemon.
@@ -136,15 +133,14 @@ public class Daemon implements Closeable {
             alias = alias + share.buildDefaultAlias();
         }
 
+        int fsIndex = vfs.incrFsIndex();
         PermissionsMapper permissionsMapper = buildPermissionMapper(share, alias);
-
-
         AttachableFileSystem shareVfs = fsFactory.newFileSystem(share.getPath(), permissionsMapper,
-                uniqueHandleGenerator, config.isRecycleEnabled());
+                uniqueHandleGenerator, config.isRecycleEnabled(), fsIndex);
         vfs.attachFileSystem(shareVfs, alias);
         share.setPath(shareVfs.getRoot());
         share.setAlias(shareVfs.getAlias());
-        LOG.info("Share has been attached: " + share);
+        LOG.info(String.format("Share has been attached: %s, index: %s", share, fsIndex));
         return shareVfs;
     }
 

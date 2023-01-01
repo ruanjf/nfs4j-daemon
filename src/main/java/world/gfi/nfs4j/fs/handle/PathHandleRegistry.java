@@ -10,8 +10,8 @@ import java.util.stream.Stream;
  * Bidirectionnal mapping of Path to/from File Handle.
  */
 public class PathHandleRegistry extends HandleRegistry<Path> {
-    public PathHandleRegistry(UniqueHandleGenerator uniqueLongGenerator) {
-        super(uniqueLongGenerator);
+    public PathHandleRegistry(UniqueHandleGenerator uniqueLongGenerator, int fsIndex) {
+        super(uniqueLongGenerator, fsIndex);
     }
 
     @Override
