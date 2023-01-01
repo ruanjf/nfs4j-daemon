@@ -12,9 +12,9 @@ available at [gfi-centre-ouest/vagrant-nfs4j](https://github.com/gfi-centre-oues
 - [ ] MacOS server support.
 - [x] ip range based auth
 - [x] NFS V3 for macOS client
-- [x] recycle bin and hide
+- [x] recycle bin and hide it from file list
 - [x] specify bind address with OncRpcSvcBuilder.withBindAddress
-- [ ] map mount uid gid
+- [ ] map uid gid from mount client rather than config
 
 
 ## Quickstart
