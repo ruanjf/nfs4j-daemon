@@ -2,11 +2,11 @@ package world.gfi.nfs4j;
 
 import org.dcache.nfs.ExportFile;
 import org.dcache.nfs.v3.MountServer;
-import org.dcache.nfs.v3.NfsServerV3;
 import org.dcache.nfs.v3.xdr.mount_prot;
 import org.dcache.nfs.v3.xdr.nfs3_prot;
-import org.dcache.nfs.v4.MDSOperationExecutor;
+import org.dcache.nfs.v4.MDSOperationExecutorMod;
 import org.dcache.nfs.v4.NFSServerV41;
+import org.dcache.nfs.v3.NfsServerV3Mod;
 import org.dcache.nfs.v4.xdr.nfs4_prot;
 import org.dcache.oncrpc4j.portmap.OncRpcEmbeddedPortmap;
 import org.dcache.oncrpc4j.rpc.IoStrategy;
@@ -29,7 +29,6 @@ import world.gfi.nfs4j.fs.permission.DefaultPermissionsMapperFactory;
 import world.gfi.nfs4j.fs.permission.PermissionsMapper;
 import world.gfi.nfs4j.status.Status;
 import world.gfi.nfs4j.status.StatusShare;
-import world.gfi.nfs4j.utils.NfsServerV3Mod;
 
 import java.io.Closeable;
 import java.io.FileInputStream;
@@ -106,11 +105,11 @@ public class Daemon implements Closeable {
 
         NFSServerV41 nfs4 = new NFSServerV41.Builder()
                 .withVfs(vfs)
-                .withOperationExecutor(new MDSOperationExecutor())
+                .withOperationExecutor(new MDSOperationExecutorMod())
                 .withExportTable(exportFile)
                 .build();
 
-        NfsServerV3 nfs3 = new NfsServerV3Mod(exportFile, vfs);
+        NfsServerV3Mod nfs3 = new NfsServerV3Mod(exportFile, vfs);
         MountServer mountd = new MountServer(exportFile, vfs);
 
         if (!config.isPortmapDisabled()) {

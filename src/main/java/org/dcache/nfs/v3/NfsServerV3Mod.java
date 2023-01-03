@@ -1,9 +1,7 @@
-package world.gfi.nfs4j.utils;
+package org.dcache.nfs.v3;
 
 import org.dcache.nfs.ExportTable;
 import org.dcache.nfs.nfsstat;
-import org.dcache.nfs.v3.HimeraNfsUtils;
-import org.dcache.nfs.v3.NfsServerV3;
 import org.dcache.nfs.v3.xdr.*;
 import org.dcache.nfs.vfs.FsStat;
 import org.dcache.nfs.vfs.Inode;
