@@ -341,14 +341,12 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
     }
 
     private void recycle(Inode parent, String path) throws IOException {
-        // LOG.info(String.format("recycle %s", handleRegistry.toPath(parent).resolve(path)));
         Inode recycleInode = this.getRecycleInode();
         Path currentPath = handleRegistry.toPath(parent).resolve(path).normalize();
         Path newPath = handleRegistry.toPath(recycleInode).resolve(path).normalize();
         if (Files.exists(newPath)) {
             long unixTime = System.currentTimeMillis() / 1000L;
-            Path backup = newPath.resolveSibling(newPath.getFileName() + String.format(".%s", unixTime));
-            Files.move(newPath, backup, StandardCopyOption.ATOMIC_MOVE);
+            newPath = newPath.resolveSibling(newPath.getFileName() + String.format(".%s", unixTime));
         }
         Files.move(currentPath, newPath, StandardCopyOption.ATOMIC_MOVE);
     }
