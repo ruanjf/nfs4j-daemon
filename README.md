@@ -84,17 +84,21 @@ Usage: <main class> [-h] [--api] [--no-share] [--portmap-disabled] [--udp]
 Configuration file is loaded from *nfs4j.yml* in working directory by default.
 
 You can set a custom filepath to this configuration file with `-c, --config=<config>` command line option.
+
+Use `--exports` option with `--config` is better.
 ```yaml
 port: 2048
 udp: false
+bindAddress: 192.168.123.10
+recycleEnabled: true
 permissions:
   gid: 1000
   uid: 1000
   mask: 0644
 shares:
-  - 'C:\Users\Toilal\projects\planireza'
-  - 'C:\Users\Toilal\projects\docker-devbox'
-  - 'D:\'
+  - 'C:\Users\Toilal\projects\planireza:/planireza'
+  - 'C:\Users\Toilal\projects\docker-devbox:/docker-devbox'
+  - 'D:\:/d'
 ```
 
 *Make sure you are using single quote on shares definition strings in yaml configuration file to avoid issues 
@@ -196,6 +200,7 @@ nfs.client.mount.options = rw,vers=3,sec=sys
 
 ### Linux client known issues
 - On Ubuntu 22.04 or Debian, list dir is stuck. Just use NFSv4 instead.
+
 
 ## Build from sources
 build from source code Java11 and Maven3 are required.
