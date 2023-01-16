@@ -206,6 +206,15 @@ nfs.client.mount.options = rw,vers=3,sec=sys
 build from source code Java11 and Maven3 are required.
 
 ```
-mvn clean verify
+mvn clean package
 ```
+
+### GraalVM
+
+1. install [GraalVM](https://www.graalvm.org/downloads/) `bash <(curl -sL https://get.graalvm.org/jdk) --to <dir> graalvm-ce-java11-22.3.0`
+2. set env env variables
+   1. JAVA_HOME `export JAVA_HOME="<dir>"`
+   2. GRAALVM_HOME `export GRAALVM_HOME="<dir>"`
+3. install `native-image` Component `"${GRAALVM_HOME}/bin/gu" install native-image`
+4. build image `mvn -Pnative -DskipTests clean package`
 

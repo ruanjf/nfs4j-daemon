@@ -1,0 +1,130 @@
+[
+  {
+    "name": "com.google.common.jimfs.SystemJimfsFileSystemProvider",
+    "methods": [
+      { "name": "removeFileSystemRunnable", "parameterTypes" : ["java.net.URI"] }
+    ]
+  },
+  {
+    "name": "ch.qos.logback.core.ConsoleAppender",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true
+  },
+  {
+    "name": "ch.qos.logback.classic.pattern.DateConverter",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true
+  },
+  {
+    "name": "ch.qos.logback.classic.pattern.LevelConverter",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true
+  },
+  {
+    "name": "ch.qos.logback.classic.pattern.LineSeparatorConverter",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true
+  },
+  {
+    "name": "ch.qos.logback.classic.pattern.LoggerConverter",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true
+  },
+  {
+    "name": "ch.qos.logback.classic.pattern.MDCConverter",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true
+  },
+  {
+    "name": "ch.qos.logback.classic.pattern.MessageConverter",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true
+  },
+  {
+    "name": "ch.qos.logback.classic.encoder.PatternLayoutEncoder",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true
+  },
+  {
+    "name": "ch.qos.logback.classic.pattern.ThreadConverter",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "allDeclaredClasses": true,
+    "allPublicClasses": true
+  },
+  {
+    "name": "java.nio.channels.DatagramChannel",
+    "methods": [
+      { "name": "join", "parameterTypes": ["java.net.InetAddress", "java.net.NetworkInterface"] },
+      { "name": "join", "parameterTypes": ["java.net.InetAddress", "java.net.NetworkInterface", "java.net.InetAddress"] }
+    ]
+  },
+  {
+    "name": "java.nio.channels.MembershipKey",
+    "methods": [
+      { "name": "block", "parameterTypes" : ["java.net.InetAddress"] },
+      { "name": "drop", "parameterTypes" : [] },
+      { "name": "networkInterface", "parameterTypes" : [] },
+      { "name": "sourceAddress", "parameterTypes" : [] },
+      { "name": "unblock", "parameterTypes" : ["java.net.InetAddress"] }
+    ]
+  },
+  {
+    "name": "org.dcache.nfs.vfs.PseudoFs",
+    "fields": [
+      { "name": "_inner" }
+    ]
+  }
+]

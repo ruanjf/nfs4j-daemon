@@ -1,0 +1,14 @@
+{
+  "bundles": [
+    {"name":"sun.security.util.Resources"}
+  ],
+  "resources": {
+    "includes": [
+      {"pattern": "exports"},
+      {"pattern": "logback.xml"},
+      {"pattern": "org/glassfish/grizzly/version.properties"}
+    ],
+    "excludes": [
+    ]
+  }
+}

@@ -94,7 +94,7 @@ public class Main implements Callable<Void> {
         Yaml yaml = new Yaml(new CustomConstructor(), new CustomRepresenter());
         Config config = null;
 
-        File configFile = this.config.toFile();
+        File configFile = this.config == null ? null : this.config.toFile();
         if (configFile != null && configFile.exists()) {
             try (FileInputStream fis = new FileInputStream(this.config.toFile())) {
                 config = yaml.loadAs(fis, Config.class);

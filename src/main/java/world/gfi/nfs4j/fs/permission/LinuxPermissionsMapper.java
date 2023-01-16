@@ -1,6 +1,6 @@
 package world.gfi.nfs4j.fs.permission;
 
-import org.dcache.auth.Subjects;
+import org.dcache.nfs.util.UnixSubjects;
 import org.dcache.nfs.vfs.Stat;
 
 import javax.security.auth.Subject;
@@ -21,8 +21,8 @@ public class LinuxPermissionsMapper implements PermissionsMapper {
 
     @Override
     public void writePermissions(Path path, Subject subject, int mode) throws IOException {
-        long uid = Subjects.getUid(subject);
-        long gid = Subjects.getPrimaryGid(subject);
+        long uid = UnixSubjects.getUid(subject);
+        long gid = UnixSubjects.getPrimaryGid(subject);
 
         Files.setAttribute(path, "unix:uid", (int) uid, NOFOLLOW_LINKS);
         Files.setAttribute(path, "unix:gid", (int) gid, NOFOLLOW_LINKS);

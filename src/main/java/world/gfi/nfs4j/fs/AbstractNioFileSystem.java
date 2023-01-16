@@ -153,8 +153,7 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
         stat.setGeneration(attrs.lastModifiedTime().toMillis());
 
         long fileHandle = handleRegistry.toFileHandle(path);
-        stat.setIno((int) fileHandle);
-        stat.setFileid((int) fileHandle);
+        stat.setIno(fileHandle);
 
         stat.setDev(17);
         stat.setRdev(17);
@@ -424,7 +423,7 @@ public abstract class AbstractNioFileSystem<A extends BasicFileAttributes> imple
     }
 
     @Override
-    public int access(Inode inode, int mode) throws IOException {
+    public int access(Subject subject, Inode inode, int mode) throws IOException {
         return mode;
     }
 

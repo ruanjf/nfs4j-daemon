@@ -26,3 +26,5 @@ hs_err_pid*
 /nfs4j.yml
 /dist
 /src/test
+
+dependency-reduced-pom.xml
