@@ -2,10 +2,10 @@ name: GraalVM Native Image builds
 on:
   workflow_dispatch:
     inputs:
-      :
-        description: 'Node version'
-        default: '16-bullseye'
-        required: true
+      app_version:
+        description: 'App version'
+        default: '0.0.1'
+        required: false
         type: string
 jobs:
   build:
