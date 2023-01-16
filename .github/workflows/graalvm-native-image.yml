@@ -1,0 +1,36 @@
+name: GraalVM Native Image builds
+on:
+  workflow_dispatch:
+    inputs:
+      :
+        description: 'Node version'
+        default: '16-bullseye'
+        required: true
+        type: string
+jobs:
+  build:
+    name: Native Image on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: '22.3.0'
+          java-version: '11'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: 'true'
+
+      - name: Build image
+        run: |
+          ./mvnw -Pnative -DskipTests clean package
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: nfs4j-daemon-${{ matrix.os }}
+          path: target/nfs4j-daemon
