@@ -1,6 +1,6 @@
 package world.gfi.nfs4j.fs.permission;
 
-import org.dcache.auth.Subjects;
+import org.dcache.nfs.util.UnixSubjects;
 import org.dcache.nfs.vfs.Stat;
 import world.gfi.nfs4j.fs.handle.PathHandleRegistryListener;
 
@@ -20,8 +20,8 @@ public class SimplePermissionsMapper<A extends BasicFileAttributes> extends Simp
 
     @Override
     public void writePermissions(Path path, Subject subject, int mode) throws IOException {
-        long uid = Subjects.getUid(subject);
-        long gid = Subjects.getPrimaryGid(subject);
+        long uid = UnixSubjects.getUid(subject);
+        long gid = UnixSubjects.getPrimaryGid(subject);
 
         this.writer.setPermissions(path, (int) uid, (int) gid, mode & 0000777);
     }

@@ -20,7 +20,7 @@ public class CustomConstructor extends Constructor {
     }
 
     @Override
-    protected Object newInstance(Class<?> ancestor, Node node, boolean tryDefault) throws InstantiationException {
+    protected Object newInstance(Class<?> ancestor, Node node, boolean tryDefault) {
         if (Path.class.isAssignableFrom(ancestor)) {
             return this.yamlConstructors.get(new Tag(Path.class)).construct(node);
         }

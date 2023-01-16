@@ -26,9 +26,11 @@ import world.gfi.nfs4j.fs.permission.SimplePermissionsMapperRead;
 import javax.security.auth.Subject;
 import java.io.IOError;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * A memory implementation of {@link VirtualFileSystem} that supports attaching others file systems {@link AttachableFileSystem} on given aliases.
@@ -169,8 +171,8 @@ public class RootFileSystem implements VirtualFileSystem {
     }
 
     @Override
-    public int access(Inode inode, int mode) throws IOException {
-        return delegate(inode).access(inode, mode);
+    public int access(Subject subject, Inode inode, int mode) throws IOException {
+        return delegate(inode).access(subject, inode, mode);
     }
 
     @Override
@@ -229,8 +231,18 @@ public class RootFileSystem implements VirtualFileSystem {
     }
 
     @Override
+    public int read(Inode inode, ByteBuffer data, long offset) throws IOException {
+        return delegate(inode).read(inode, data, offset);
+    }
+
+    @Override
     public WriteResult write(Inode inode, byte[] data, long offset, int count, StabilityLevel stabilityLevel) throws IOException {
         return delegate(inode).write(inode, data, offset, count, stabilityLevel);
+    }
+
+    @Override
+    public WriteResult write(Inode inode, ByteBuffer data, long offset, StabilityLevel stabilityLevel) throws IOException {
+        return delegate(inode).write(inode, data, offset, stabilityLevel);
     }
 
     @Override
@@ -276,5 +288,30 @@ public class RootFileSystem implements VirtualFileSystem {
     @Override
     public boolean getCasePreserving() {
         return false;
+    }
+
+    @Override
+    public byte[] getXattr(Inode inode, String attr) throws IOException {
+        return delegate(inode).getXattr(inode, attr);
+    }
+
+    @Override
+    public void setXattr(Inode inode, String attr, byte[] value, SetXattrMode mode) throws IOException {
+        delegate(inode).setXattr(inode, attr, value, mode);
+    }
+
+    @Override
+    public String[] listXattrs(Inode inode) throws IOException {
+        return delegate(inode).listXattrs(inode);
+    }
+
+    @Override
+    public void removeXattr(Inode inode, String attr) throws IOException {
+        delegate(inode).removeXattr(inode, attr);
+    }
+
+    @Override
+    public CompletableFuture<Long> copyFileRange(Inode src, long srcPos, Inode dst, long dstPos, long len) {
+        return delegate(dst).copyFileRange(src, srcPos, dst, dstPos, len);
     }
 }

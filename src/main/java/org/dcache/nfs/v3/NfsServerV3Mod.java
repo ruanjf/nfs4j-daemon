@@ -12,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import world.gfi.nfs4j.fs.RootFileSystem;
 
-import static org.dcache.nfs.v3.HimeraNfsUtils.defaultPostOpAttr;
-
 public class NfsServerV3Mod extends NfsServerV3 {
     private final RootFileSystem _vfs;
     private final ExportTable _exports;
@@ -36,13 +34,13 @@ public class NfsServerV3Mod extends NfsServerV3 {
             res.resok = new FSSTAT3resok();
 
             FsStat fsStat = fs.getFsStat();
-            res.resok.tbytes = new size3(new uint64(fsStat.getTotalSpace()));
-            res.resok.fbytes = new size3(new uint64(fsStat.getTotalSpace() - fsStat.getUsedSpace()));
-            res.resok.abytes = new size3(new uint64(fsStat.getTotalSpace() - fsStat.getUsedSpace()));
+            res.resok.tbytes = new size3(fsStat.getTotalSpace());
+            res.resok.fbytes = new size3(fsStat.getTotalSpace() - fsStat.getUsedSpace());
+            res.resok.abytes = new size3(fsStat.getTotalSpace() - fsStat.getUsedSpace());
 
-            res.resok.tfiles = new size3(new uint64(fsStat.getTotalFiles()));
-            res.resok.ffiles = new size3(new uint64(fsStat.getTotalFiles() - fsStat.getUsedFiles()));
-            res.resok.afiles = new size3(new uint64(fsStat.getTotalFiles() - fsStat.getUsedFiles()));
+            res.resok.tfiles = new size3(fsStat.getTotalFiles());
+            res.resok.ffiles = new size3(fsStat.getTotalFiles() - fsStat.getUsedFiles());
+            res.resok.afiles = new size3(fsStat.getTotalFiles() - fsStat.getUsedFiles());
 
             res.resok.invarsec = new uint32(0);
 
@@ -50,13 +48,13 @@ public class NfsServerV3Mod extends NfsServerV3 {
             res.resok.obj_attributes.attributes_follow = true;
             res.resok.obj_attributes.attributes = new fattr3();
 
-            HimeraNfsUtils.fill_attributes(fs.getattr(inode), res.resok.obj_attributes.attributes);
+            Utils.fill_attributes(fs.getattr(inode), res.resok.obj_attributes.attributes);
 
         } catch (Exception e) {
             _log.error("FSSTAT", e);
             res.status = nfsstat.NFSERR_SERVERFAULT;
             res.resfail = new FSSTAT3resfail();
-            res.resfail.obj_attributes = defaultPostOpAttr();
+            res.resfail.obj_attributes = Utils.defaultPostOpAttr();
         }
 
         return res;
