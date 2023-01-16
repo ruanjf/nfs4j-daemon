@@ -276,13 +276,12 @@
                                 -H:ResourceConfigurationFiles=native/resource-config.json
                              -->
                             <buildArgs>
-<!--                                <arg>&#45;&#45;trace-class-initialization=jdk.management.jfr.SettingDescriptorInfo,com.sun.jmx.mbeanserver.Introspector,com.sun.jmx.defaults.JmxProperties,com.sun.jmx.mbeanserver.MBeanInstantiator,jdk.management.jfr.StreamManager,com.sun.jmx.mbeanserver.MXBeanLookup</arg>-->
-<!--                                <arg>&#45;&#45;initialize-at-build-time=com.google.common.jimfs.SystemJimfsFileSystemProvider,org.slf4j.LoggerFactory,org.slf4j.impl.StaticLoggerBinder,ch.qos.logback</arg>-->
                                 <arg>--initialize-at-build-time=com.google.common.jimfs.SystemJimfsFileSystemProvider,org.slf4j.LoggerFactory</arg>
                             </buildArgs>
                             <classpath>
                                 <param>${project.build.directory}/${project.artifactId}-${project.version}-exec.jar</param>
                             </classpath>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
                         </configuration>
                     </plugin>
                 </plugins>

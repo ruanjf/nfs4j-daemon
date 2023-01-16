@@ -7,10 +7,10 @@
     <formats>
         <format>zip</format>
     </formats>
-    <files>
-        <file>
-            <source>${project.build.directory}/${project.build.finalName}</source>
-            <outputDirectory>/</outputDirectory>
-        </file>
-    </files>
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}/${project.build.finalName}</directory>
+            <outputDirectory></outputDirectory>
+        </fileSet>
+    </fileSets>
 </assembly>
