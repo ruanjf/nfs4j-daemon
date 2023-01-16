@@ -15,6 +15,7 @@ available at [gfi-centre-ouest/vagrant-nfs4j](https://github.com/gfi-centre-oues
 - [x] recycle bin and hide it from file list
 - [x] specify bind address with OncRpcSvcBuilder.withBindAddress
 - [ ] map uid gid from mount client rather than config
+- [x] GraalVM Native Image
 
 
 ## Quickstart
