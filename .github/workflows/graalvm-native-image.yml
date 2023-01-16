@@ -27,10 +27,10 @@ jobs:
 
       - name: Build image
         run: |
-          ./mvnw -Pnative -DskipTests clean package
+          ./mvnw -Pnative -DskipTests clean package assembly:single
 
       - name: Upload binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: nfs4j-daemon-${{ matrix.os }}
-          path: target/nfs4j-daemon
+          name: nfs4j-daemon-bin-${{ matrix.os }}.zip
+          path: target/nfs4j-daemon-bin.zip
