@@ -1,0 +1,16 @@
+# port: 2048
+#udp: false
+#bindAddress: 0.0.0.0
+#recycleEnabled: true
+#permissions:
+#  gid: 0
+#  # uid: 0
+#  uid: 501
+#  mask: 0777
+#  type: DISABLED
+#shares:
+#  - 'D:\Downloads:/downloads'
+#  - 'E:\:/storage'
+#  - 'F:\:/storage1'
+#  - 'G:\:/storage2'
+#  - 'H:\:/storage3'
