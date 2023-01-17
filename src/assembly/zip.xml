@@ -12,5 +12,15 @@
             <directory>${project.build.directory}/${project.build.finalName}</directory>
             <outputDirectory></outputDirectory>
         </fileSet>
+        <fileSet>
+            <directory>distribution/conf</directory>
+            <outputDirectory></outputDirectory>
+        </fileSet>
     </fileSets>
+    <files>
+        <file>
+            <source>src/main/resources/exports</source>
+            <outputDirectory></outputDirectory>
+        </file>
+    </files>
 </assembly>
