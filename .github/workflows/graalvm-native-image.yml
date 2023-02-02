@@ -7,6 +7,10 @@ on:
         default: '0.0.1'
         required: false
         type: string
+  push:
+    tags:
+      - 'v*'
+
 jobs:
   build:
     name: Native Image on ${{ matrix.os }}
@@ -34,3 +38,31 @@ jobs:
         with:
           name: nfs4j-daemon-bin-${{ matrix.os }}.zip
           path: target/nfs4j-daemon-bin.zip
+
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download binary MacOS
+        uses: actions/download-artifact@v3
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: nfs4j-daemon-bin-macos-latest.zip
+      - name: Download binary Windows
+        uses: actions/download-artifact@v3
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: nfs4j-daemon-bin-windows-latest.zip
+      - name: Download binary Ubuntu
+        uses: actions/download-artifact@v3
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: nfs4j-daemon-bin-ubuntu-latest.zip
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            nfs4j-daemon-bin-macos-latest.zip
+            nfs4j-daemon-bin-windows-latest.zip
+            nfs4j-daemon-bin-ubuntu-latest.zip
